@@ -577,6 +577,7 @@ GameObject:
   - component: {fileID: 8753128716301361699}
   - component: {fileID: 6606412351250439508}
   - component: {fileID: 401589335960027209}
+  - component: {fileID: 8768512690244357124}
   m_Layer: 0
   m_Name: Star_Ship_Player
   m_TagString: Untagged
@@ -687,3 +688,17 @@ MonoBehaviour:
   maxHp: 5
   maxShield: 5
   shieldRegenDelay: 10
+--- !u!114 &8768512690244357124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9088974924925896232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46491c806147bfd4f9170278bf9714ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DebugHitTester
+  _playerHealth: {fileID: 401589335960027209}
+  _hitKey: 22

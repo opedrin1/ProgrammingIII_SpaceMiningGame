@@ -1,14 +1,12 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-/// <summary>
 /// Player HP and shield system.
 /// hp: permanent damage, no regeneration.
 /// shield: regenerates 1 point every _shieldRegenDelay seconds of not being hit.
-/// any hit interrupts and restarts that countdown. hits drain shield first. Once shield is at 0, hits drain HP instead.
-/// </summary>
+/// any hit interrupts and restarts that countdown. Hits drain shield first. Once shield is at 0, hits drain HP instead.
+
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Health")]
@@ -30,8 +28,14 @@ public class PlayerHealth : MonoBehaviour
     // fired whenever HP changes, passing the new value
     public event Action<int> OnHpChanged;
 
-    // fired whenever shield changes, passing the new value
+    // fired whenever shield changes (hit or regen), passing the new value
     public event Action<int> OnShieldChanged;
+
+    // fired specifically when a hit consumes a shield point (not on regen)
+    public event Action OnShieldHit;
+
+    // fired continuously while regenerating, passing progress from 0 to 1. Resets to 0 on interruption or once a point is gained
+    public event Action<float> OnShieldRegenProgress;
 
     // fired once when HP reaches 0
     public event Action OnPlayerDied;
@@ -50,6 +54,7 @@ public class PlayerHealth : MonoBehaviour
         {
             _currentShield--;
             OnShieldChanged?.Invoke(_currentShield);
+            OnShieldHit?.Invoke();
         }
         else
         {
@@ -71,6 +76,8 @@ public class PlayerHealth : MonoBehaviour
         if (_shieldRegenCoroutine != null)
             StopCoroutine(_shieldRegenCoroutine);
 
+        OnShieldRegenProgress?.Invoke(0f);
+
         if (_currentShield < maxShield)
             _shieldRegenCoroutine = StartCoroutine(ShieldRegenRoutine());
     }
@@ -79,10 +86,17 @@ public class PlayerHealth : MonoBehaviour
     {
         while (_currentShield < maxShield)
         {
-            yield return new WaitForSeconds(shieldRegenDelay);
+            float elapsed = 0f;
+            while (elapsed < shieldRegenDelay)
+            {
+                elapsed += Time.deltaTime;
+                OnShieldRegenProgress?.Invoke(Mathf.Clamp01(elapsed / shieldRegenDelay));
+                yield return null;
+            }
 
             _currentShield++;
             OnShieldChanged?.Invoke(_currentShield);
+            OnShieldRegenProgress?.Invoke(0f); // reset for the next point, or final idle state if now full
         }
 
         _shieldRegenCoroutine = null;

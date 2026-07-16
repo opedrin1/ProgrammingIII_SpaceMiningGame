@@ -21,16 +21,16 @@ public class ShieldVisual : MonoBehaviour
     private void OnEnable()
     {
         if (playerHealth != null)
-            playerHealth.OnShieldChanged += HandleShieldChanged;
+            playerHealth.OnShieldHit += HandleShieldHit;
     }
 
     private void OnDisable()
     {
         if (playerHealth != null)
-            playerHealth.OnShieldChanged -= HandleShieldChanged;
+            playerHealth.OnShieldHit -= HandleShieldHit;
     }
 
-    private void HandleShieldChanged(int newShieldValue)
+    private void HandleShieldHit()
     {
         if (_flashCoroutine != null)
             StopCoroutine(_flashCoroutine);

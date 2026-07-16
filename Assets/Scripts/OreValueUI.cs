@@ -9,7 +9,6 @@ using UnityEngine.Serialization;
 public class OreValueUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text valueText;
-    [SerializeField] private string prefix = "Ore Value: ";
 
     private void Start()
     {
@@ -28,6 +27,6 @@ public class OreValueUI : MonoBehaviour
 
     private void UpdateDisplay(float newTotal)
     {
-        valueText.text = $"{prefix}{newTotal:F0}";
+        valueText.text = $"{newTotal:F0}";
     }
 }

@@ -34,7 +34,6 @@ public class Ore : MonoBehaviour, IMineable
 
         if (IsDepleted)
         {
-            Debug.Log($"{oreType} ore depleted — total value earned: {totalAmount * valuePerUnit:F1}");
             Destroy(gameObject);
         }
 

@@ -47,9 +47,7 @@ public class PlayerController : MonoBehaviour
 
         Vector2 toMouse = mouseWorld - (Vector2)transform.position;
         if (toMouse.sqrMagnitude < 0.0001f) return;
-
-        // -90f assumes the sprite's "forward" is +Y (up). If your sprite faces
-        // right by default, remove the -90f.
+        
         float targetAngle = Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg - 90f;
         float newAngle = Mathf.MoveTowardsAngle(_rb.rotation, targetAngle, turnSpeed * Time.fixedDeltaTime);
         _rb.MoveRotation(newAngle);

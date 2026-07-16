@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6039d2ed11b06f347a0366ca426c0968
+guid: b38c2ca9aebedbf4ea18a8d3fd3d80f2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2360533474752221246
-    second: Gemini_Generated_Image_ylf20dylf20dylf2_0
+      213: -396580314420081607
+    second: Solid_red_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gemini_Generated_Image_ylf20dylf20dylf2_0
+      name: Solid_red_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1264
-        height: 848
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2cfa9f4bf43bd3fd0800000000000000
-      internalID: -2360533474752221246
+      spriteID: 93c04122e401f7af0800000000000000
+      internalID: -396580314420081607
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Gemini_Generated_Image_ylf20dylf20dylf2_0: -2360533474752221246
+      Solid_red_0: -396580314420081607
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

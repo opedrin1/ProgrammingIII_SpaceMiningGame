@@ -8,6 +8,7 @@ public class PlayerWeapon : MonoBehaviour
     [SerializeField] private Transform rightFirePoint;
     
     [Header("Weapon Settings")]
+    [Tooltip("Shots per second.")]
     [SerializeField] private float fireRate = 4f;
     [SerializeField] private GameObject projectilePrefab;
 
@@ -16,8 +17,14 @@ public class PlayerWeapon : MonoBehaviour
 
     private void Update()
     {
-        bool isFiring = Mouse.current.leftButton.isPressed;
-        if (!isFiring) return;
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            Fire();
+            _fireTimer = 0f;
+            return;
+        }
+
+        if (!Mouse.current.leftButton.isPressed) return;
 
         _fireTimer += Time.deltaTime;
         float fireInterval = 1f / Mathf.Max(fireRate, 0.01f);

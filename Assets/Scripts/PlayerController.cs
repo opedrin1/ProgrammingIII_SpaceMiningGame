@@ -1,12 +1,6 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-/// <summary>
-/// spaceship controller
-/// rotation: face the mouse cursor
-/// thrust: W accelerates toward maxSpeed, S decelerates toward 0.
-/// speed is clamped at 0, so the ship can never move backwards.
-/// </summary>
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
@@ -21,22 +15,74 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float turnSpeed = 360f;
     [SerializeField] private Camera cam;
 
+    [Header("Dash")]
+    [SerializeField] private float dashDistance = 4f;
+    [SerializeField] private float dashSpeed = 20f;
+    [SerializeField] private float dashCooldown = 1.5f;
+    [SerializeField] private Key dashLeftKey = Key.A;
+    [SerializeField] private Key dashRightKey = Key.D;
+
     private Rigidbody2D _rb;
     private float _currentSpeed;
+    private bool _isDashing;
+    private float _dashCooldownTimer;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _rb.gravityScale = 0f; // no gravity in space
+        _rb.gravityScale = 0f;
+        _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         if (cam == null) cam = Camera.main;
+    }
+
+    private void Update()
+    {
+        if (_dashCooldownTimer > 0f)
+            _dashCooldownTimer -= Time.deltaTime;
+
+        if (_isDashing) return;
+
+        if (Keyboard.current[dashLeftKey].wasPressedThisFrame)
+            TryStartDash(-transform.right);
+        else if (Keyboard.current[dashRightKey].wasPressedThisFrame)
+            TryStartDash(transform.right);
     }
 
     private void FixedUpdate()
     {
         RotateTowardsMouse();
-        UpdateSpeed();
 
-        _rb.linearVelocity = (Vector2)transform.up * _currentSpeed;
+        if (!_isDashing)
+        {
+            UpdateSpeed();
+            _rb.linearVelocity = (Vector2)transform.up * _currentSpeed;
+        }
+    }
+
+    private void TryStartDash(Vector2 direction)
+    {
+        if (_dashCooldownTimer > 0f) return;
+
+        StartCoroutine(DashRoutine(direction));
+    }
+
+    private IEnumerator DashRoutine(Vector2 direction)
+    {
+        _isDashing = true;
+        _dashCooldownTimer = dashCooldown;
+
+        float duration = dashDistance / Mathf.Max(dashSpeed, 0.01f);
+        float elapsed = 0f;
+        Vector2 dashVelocity = direction.normalized * dashSpeed;
+
+        while (elapsed < duration)
+        {
+            _rb.linearVelocity = dashVelocity;
+            elapsed += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+
+        _isDashing = false;
     }
 
     private void RotateTowardsMouse()

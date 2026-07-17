@@ -638,6 +638,11 @@ MonoBehaviour:
   idleDrag: 1.5
   turnSpeed: 360
   cam: {fileID: 0}
+  dashDistance: 2
+  dashSpeed: 10
+  dashCooldown: 2
+  dashLeftKey: 15
+  dashRightKey: 18
 --- !u!114 &6606412351250439508
 MonoBehaviour:
   m_ObjectHideFlags: 0
